@@ -1,0 +1,18 @@
+sequenceDiagram
+participant user
+participant browser
+participant server
+
+    user->>browser: Escribe la URL: https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    server-->>browser: HTML document
+    deactivate server
+
+    user->>browser: Escribe una nueva nota en el campo formulario
+    user->>browser: Hace clic en el botón guardar
+    activate server
+    browser-->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    server-->>browser: HTML document
+    deactivate server
+    browser-->>user: Puede visualizar la nueva nota al final de la lista de notas
