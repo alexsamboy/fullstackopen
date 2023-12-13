@@ -1,0 +1,26 @@
+sequenceDiagram
+participant browser
+participant server
+
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: main.css
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: spa.js
+    deactivate server
+
+    Note right of browser: El navegador comienza a ejecutar el JS que devuelve el JSON del servidor
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "stinky", "date": "2023-12-13T13:09:09.197Z" }, ... ]
+    Note right of browser: El navegador inicia a cargar la función que muestra las notas
+    deactivate server

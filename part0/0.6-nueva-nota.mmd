@@ -1,0 +1,40 @@
+sequenceDiagram
+participant user
+participant browser
+participant server
+
+    user->>browser: https://studies.cs.helsinki.fi/exampleapp/spa
+    Note right of user: El usuario escribe la URL en el navegador
+    activate server
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the main.css
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server-->>browser: spa.js
+    deactivate server
+
+    Note right of browser: El navegador comienza a ejecutar el JS que devuelve el JSON del servidor
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "stinky", "date": "2023-12-13T13:09:09.197Z" }, ... ]
+    deactivate server
+
+    user->>browser: 
+    Note right of user: Escribe una nueva nota en el campo formulario y Hace clic en el botón guardar
+
+    Note right of browser: El navegador inicia a cargar la función que muestra las notas
+    browser-->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    server-->>browser: {"message":"note created"}
+    deactivate server
+
+    browser-->>user: HTML document
+    Note right of user: Puede visualizar la nueva nota al final de la lista de notas
