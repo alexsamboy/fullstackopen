@@ -1,0 +1,23 @@
+sequenceDiagram
+participant user
+participant browser
+participant server
+
+    user->>browser: https://studies.cs.helsinki.fi/exampleapp/notes
+    Note right of user: El usuario escribe la URL en el navegador
+    activate server
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    server-->>browser: HTML document
+    deactivate server
+
+    browser-->>user: HTML document
+    Note left of browser: El navegador muestra el sitio solicitado
+    user->>browser: 
+    Note right of user: Escribe una nueva nota en el campo formulario y Hace clic en el botón guardar
+    activate server
+    browser-->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    Note left of server: El server procesa la petición POST
+    server-->>browser: HTML document
+    Note left of server: El server retorna el documento HTML con la nueva nota
+    deactivate server
+    browser-->>user: Puede visualizar la nueva nota al final de la lista de notas
