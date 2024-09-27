@@ -54,6 +54,7 @@ const App = () => {
   }
 
   const setContador = () => setCounter(counter + 1)
+  const setToZero = () => setCounter(0)
 
   const name = 'Peter'
   const age = 10
@@ -82,7 +83,7 @@ const App = () => {
       <button onClick={handleClick}>Plus</button>
       <button onClick={() => setCounter(counter + 1)}>Click me!</button>
       <button onClick={setContador}>+ Contador</button>
-      <button onClick={() => setCounter(0)}>zero</button>
+      <button onClick={setToZero}>zero</button>
 
       <h1>Greetings</h1>
       <Hello name = 'Manuel' age = {42} />
