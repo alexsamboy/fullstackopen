@@ -42,11 +42,18 @@ const Hello = ({ name, age }) => {
 const App = () => {
   const [ counter, setCounter ] = useState(0)
 
-  setTimeout(
+  /*setTimeout(
     () => setCounter(counter + 1),
     1000
-  )
+  )*/
 
+  //console.log('rendering...', counter)
+
+  const handleClick = () => {
+    console.log('Clickeado')
+  }
+
+  const setContador = () => setCounter(counter + 1)
 
   const name = 'Peter'
   const age = 10
@@ -72,6 +79,10 @@ const App = () => {
     <div>
       
       <div>{ counter }</div>
+      <button onClick={handleClick}>Plus</button>
+      <button onClick={() => setCounter(counter + 1)}>Click me!</button>
+      <button onClick={setContador}>+ Contador</button>
+      <button onClick={() => setCounter(0)}>zero</button>
 
       <h1>Greetings</h1>
       <Hello name = 'Manuel' age = {42} />
