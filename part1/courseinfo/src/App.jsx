@@ -39,21 +39,23 @@ const Hello = ({ name, age }) => {
   )
 }
 
+const Display = (props) =>{
+  return(
+    <div>{ props.counter }</div>
+  )
+}
+
+const Button = (props) => {
+  return(
+    <button onClick={props.onClick}>{props.text}</button>
+  )
+}
+
 const App = () => {
   const [ counter, setCounter ] = useState(0)
 
-  /*setTimeout(
-    () => setCounter(counter + 1),
-    1000
-  )*/
-
-  //console.log('rendering...', counter)
-
-  const handleClick = () => {
-    console.log('Clickeado')
-  }
-
-  const setContador = () => setCounter(counter + 1)
+  const increaseByOne = () => setCounter(counter + 1)
+  const decreaseByOne = () => setCounter(counter - 1)
   const setToZero = () => setCounter(0)
 
   const name = 'Peter'
@@ -78,12 +80,11 @@ const App = () => {
 
   return (
     <div>
-      
-      <div>{ counter }</div>
-      <button onClick={handleClick}>Plus</button>
-      <button onClick={() => setCounter(counter + 1)}>Click me!</button>
-      <button onClick={setContador}>+ Contador</button>
-      <button onClick={setToZero}>zero</button>
+
+      <Display counter = { counter } />
+      <Button onClick = {increaseByOne} text='plus' />
+      <Button onClick = {decreaseByOne} text='minus' />
+      <Button onClick = {setToZero} text='Zero' />
 
       <h1>Greetings</h1>
       <Hello name = 'Manuel' age = {42} />
