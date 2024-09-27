@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const Header = (props) => {
   return (
     <>
@@ -24,10 +26,7 @@ const Total = (props) => {
   return <p>Number of exercises {props.parts1 + props.parts2 + props.parts3}</p>;
 };
 
-const Hello = (props) => {
-  const name = props.name
-  const age = props.age
-
+const Hello = ({ name, age }) => {
   const bornYear = () => new Date().getFullYear() - age
     
   return(
@@ -41,6 +40,14 @@ const Hello = (props) => {
 }
 
 const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  )
+
+
   const name = 'Peter'
   const age = 10
   const course = {
@@ -63,6 +70,9 @@ const App = () => {
 
   return (
     <div>
+      
+      <div>{ counter }</div>
+
       <h1>Greetings</h1>
       <Hello name = 'Manuel' age = {42} />
       <Hello name={name} age={age} />
