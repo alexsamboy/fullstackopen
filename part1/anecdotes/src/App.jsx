@@ -32,7 +32,7 @@ const App = () => {
     const copyVotes = [...votes]
     copyVotes[selected] += 1
     setVotes(copyVotes)
-    console.log(copyVotes)
+    //console.log(copyVotes)
   }
 
   return (
