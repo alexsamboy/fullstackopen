@@ -18,6 +18,8 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+
   const [selected, setSelected] = useState(0)
 
   const randomNumber = () => {
@@ -26,9 +28,17 @@ const App = () => {
     setSelected(number)
   }
 
+  const onVote = () => {
+    const copyVotes = [...votes]
+    copyVotes[selected] += 1
+    setVotes(copyVotes)
+    console.log(copyVotes)
+  }
+
   return (
     <div>
       {anecdotes[selected]}<br />
+      <Button onClick={onVote} text='Vote' />
       <Button onClick={randomNumber} text='Next anecdote' />
     </div>
   )
