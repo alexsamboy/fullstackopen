@@ -6,6 +6,13 @@ const Button = ({onClick, text}) => {
   )
 }
 
+const MostVotes = ({votes, anecdotes}) => {
+  const maxVotes = votes.indexOf(Math.max(...votes))
+  return(
+    <p>{anecdotes[maxVotes]} Has {votes[maxVotes]} votes</p>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -38,8 +45,10 @@ const App = () => {
   return (
     <div>
       {anecdotes[selected]}<br />
+      <p>Has {votes[selected]} votes.</p>
       <Button onClick={onVote} text='Vote' />
       <Button onClick={randomNumber} text='Next anecdote' />
+      <MostVotes votes={votes} anecdotes={anecdotes} />
     </div>
   )
 }
