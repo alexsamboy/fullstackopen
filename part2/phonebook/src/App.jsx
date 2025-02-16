@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -13,11 +13,10 @@ const App = () => {
   // Cargar datos del servidor json-server
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
+    personService.getAll()
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(initialPersons)
       })
   },[])
   console.log('render', persons.length, 'persons')
@@ -38,19 +37,25 @@ const App = () => {
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} is already added to the phonebook`);
       setNewName(''); // Limpiar el input
+      setNewNumber('')
       return; // Evitar agregar la persona si ya existe
     }
 
     // Si no existe, agregar la persona
   const personObject = {
-    id: persons.length + 1, // Agregar el id incremental a cada persona agregada
     name: newName,
     number: newNumber
   }
 
-    setPersons(persons.concat(personObject))
+  personService.create(personObject)
+  .then((returnedPerson) =>{
+    setPersons(persons.concat(returnedPerson)); // Usar el objeto con ID del backend
+    console.log(returnedPerson)
     setNewName('')
     setNewNumber('')
+  })
+
+    
   }
 
   const handleNameChange = (event) => {
@@ -88,7 +93,7 @@ const App = () => {
       />
       
       <h2>Numbers</h2>
-      <Persons name={personsToShow} />
+      <Persons persons={personsToShow} />
       <div>debug: {newName} {newNumber}</div>
     </div>
   )
