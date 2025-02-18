@@ -1,14 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import pucmmLogo from './assets/pucmm-logo.svg'
+import { useState, useEffect } from "react";
+import eventService from './services/events'
 import Header from './components/Header'
+import Footer from './components/Footer'
+import Events from './components/Events'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [events, setEvents] = useState([]);
+
+
+  useEffect(() => {
+    console.log("effect");
+
+    eventService.getAll().then((initialEvents) => {
+      console.log("promise fulfilled", initialEvents);
+      setEvents(initialEvents);
+    });
+  }, []);
+
+console.log('eventos', events)
 
   return (
     <>
       <Header />
+      <Events />
+      <Footer />
     </>
   )
 }
