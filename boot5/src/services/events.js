@@ -1,33 +1,39 @@
 import axios from 'axios'
 
-const url = "https://pucmm.edu.do/_api/web/lists/getbyid('ef090f7d-6d64-4483-a1ff-323863b4186c')/Items";
+const url = "https://dia.pucmm.edu.do/wp-json/wp/v2/posts";
+const USERNAME = "mperez";
+const PASSWORD = "mw5s 7Pjd WRXH 2KdE m4sV Dyro";
 
 // Campos a seleccionar
 const selectFields = [
-    "Id",
-    "Actividad",
-    "Fecha",
-    "Per_x00ed_odo",
-    "Categor_x00ed_a",
-    "D_x00ed_a",
-    "Mes",
-    "DiaNum",
-    "DiaLetra",
-    "MesVista",
-    "Visible"
-].join(",");
-
-// Filtros dinámicos
-const today = new Date().toISOString().split("T")[0]; // Fecha actual en YYYY-MM-DD
-const filters = `Visible eq 1 and Fecha ge '${today}'`;
+    "id",
+    "title",
+    "categories",
+    "location",
+    "organizer",
+    "acf",
+    "author",
+    "featured_media",
+  ].join(",");
 
 // URL final
-const baseUrl = `${url}?$select=${selectFields}&$filter=${filters}`;
+const baseUrl = `${url}?_fields=${selectFields}`;
 
-const getAll = () => {
-    const request = axios.get(baseUrl)
-    return request.then(response => response.data.value)
-}
+const getAll = async () => {
+    try {
+      const response = await axios.get(baseUrl, {
+        auth: {
+          username: USERNAME,
+          password: PASSWORD,
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+      return [];
+    }
+  };
 
 const create = newObject => {
     const request = axios.post(baseUrl, newObject)
