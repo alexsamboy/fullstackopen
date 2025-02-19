@@ -16,14 +16,16 @@ const Events = ({ events }) => {
                   <h5 className="card-title">{event.title.rendered}</h5>
                   <p className="card-text">-</p>
                   <ul className="list-group list-group-flush mx-n3">
-                    <li className="list-group-item">An item</li>
-                    <li className="list-group-item">A second item</li>
+                    <li className="list-group-item">{event.acf.fecha_inicio}</li>
+                    <li className="list-group-item">{event.acf.ubicacion}</li>
                     <li className="list-group-item">A third item</li>
                   </ul>
                 </div>
                 <div className="card-footer">
                   <small className="text-body-secondary">
-                    Last updated 3 mins ago
+                  {event.acf.detcampus}
+                  {event.acf.status}
+                  {event.acf.modalidad}
                   </small>
                 </div>
               </div>

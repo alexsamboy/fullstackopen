@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const url = "https://dia.pucmm.edu.do/wp-json/wp/v2/posts";
-const USERNAME = "mperez";
-const PASSWORD = "mw5s 7Pjd WRXH 2KdE m4sV Dyro";
+const apiUrl = import.meta.env.VITE_API_URL;
+const apiUser = import.meta.env.VITE_API_USERNAME;
+const apiPass = import.meta.env.VITE_API_PASSWORD;
 
 // Campos a seleccionar
 const selectFields = [
@@ -16,15 +16,17 @@ const selectFields = [
     "featured_media",
   ].join(",");
 
+  const perPage ='per_page='+ 8;
+
 // URL final
-const baseUrl = `${url}?_fields=${selectFields}`;
+const baseUrl = `${apiUrl}/v2/posts?_fields=${selectFields}&${perPage}`;
 
 const getAll = async () => {
     try {
       const response = await axios.get(baseUrl, {
         auth: {
-          username: USERNAME,
-          password: PASSWORD,
+          username: apiUser,
+          password: apiPass,
         },
       });
   
