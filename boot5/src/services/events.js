@@ -6,24 +6,91 @@ const apiPass = import.meta.env.VITE_API_PASSWORD;
 
 // Campos a seleccionar
 const selectFields = [
-    "id",
-    "title",
-    "categories",
-    "location",
-    "organizer",
-    "acf",
-    "author",
-    "featured_media",
-  ].join(",");
+  "id",
+  "title",
+  "categories",
+  "location",
+  "organizer",
+  "acf",
+  "featured_media",
+].join(",");
 
-  const perPage ='per_page='+ 16;
+const perPage = 'per_page=' + 17;
 
 // URL final
 const baseUrl = `${apiUrl}/posts?_fields=${selectFields}&${perPage}`;
 
-const getPostsWithRelations = async () => {
+const axiosConfig = {
+  auth: {
+    username: apiUser,
+    password: apiPass
+  }
+};
+
+const getPosts = async () => {
   try {
     // Obtener los posts
+    const response = await axios.get(baseUrl,
+      axiosConfig,
+    );
+
+    // Verificar si la respuesta contiene los datos esperados
+    //console.log("API Response:", response.data);
+
+    // Asegurar que 'posts' sea un array
+    const posts = Array.isArray(response.data) ? response.data : [];
+
+    if (posts.length === 0) {
+      console.warn("No se encontraron posts en la API.");
+      return [];
+    }
+
+    // Extraer IDs únicos de categorías, ubicaciones, organizadores y media
+    const categoryIds = [...new Set(posts.flatMap(post => post.categories))];
+    const locationIds = [...new Set(posts.flatMap(post => post.location))];
+    const organizerIds = [...new Set(posts.flatMap(post => post.organizer))];
+    const mediaIds = [...new Set(posts.map(post => post.featured_media).filter(id => id))]; // Filtrar valores vacíos
+
+    // Obtener datos relacionados en paralelo
+    const [categories, locations, organizers, media] = await Promise.all([
+      axios.get(`${apiUrl}/categories?include=${categoryIds.join(",")}`, axiosConfig),
+      axios.get(`${apiUrl}/location?include=${locationIds.join(",")}`, axiosConfig),
+      axios.get(`${apiUrl}/organizer?include=${organizerIds.join(",")}`, axiosConfig),
+      axios.get(`${apiUrl}/media?include=${mediaIds.join(",")}`, axiosConfig)
+    ]);
+
+    // Convertir arrays en objetos para acceso rápido
+    const categoryMap = Object.fromEntries(categories.data.map(cat => [cat.id, cat.name]));
+    const locationMap = Object.fromEntries(locations.data.map(loc => [loc.id, loc.name]));
+    const organizerMap = Object.fromEntries(organizers.data.map(org => [org.id, org.name]));
+    const mediaMap = Object.fromEntries(media.data.map(med => [med.id, med.source_url])); // Guardar solo la URL de la imagen
+
+    // Agregar datos relacionados como strings
+    const enrichedPosts = posts.map(post => ({
+      ...post,
+      category_name: categoryMap[post.categories[0]] || "Desconocido",
+      location_name: locationMap[post.location[0]] || "Desconocido",
+      organizer_name: organizerMap[post.organizer[0]] || "Desconocido",
+      featured_media_url: mediaMap[post.featured_media] || null, // Asignar la URL de la imagen
+
+      // Formatear fecha y hora en formato datetime
+      fecha_inicio: `${post.acf.fecha_inicio.slice(0, 4)}-${post.acf.fecha_inicio.slice(4, 6)}-${post.acf.fecha_inicio.slice(6, 8)} ${post.acf.hora_de_inicio}`,
+      fecha_termino: `${post.acf.fecha_termino.slice(0, 4)}-${post.acf.fecha_termino.slice(4, 6)}-${post.acf.fecha_termino.slice(6, 8)} ${post.acf.hora_termino}`,
+    }));
+
+    //console.log('Posts:', enrichedPosts);
+
+    return enrichedPosts;
+
+  } catch (error) {
+    console.error("Error al obtener los datos:", error);
+    return [];
+  }
+};
+
+
+const getAll = async () => {
+  try {
     const response = await axios.get(baseUrl, {
       auth: {
         username: apiUser,
@@ -31,93 +98,32 @@ const getPostsWithRelations = async () => {
       },
     });
 
-    // Verificar si la respuesta contiene los datos esperados
-    console.log("API Response:", response.data);
-
-    // Asegurar que 'posts' sea un array
-    const posts = Array.isArray(response.data) ? response.data : [];
-
-    if (posts.length === 0) {
-        console.warn("No se encontraron posts en la API.");
-        return [];
-    }
-
-      // Extraer IDs únicos de categorías, ubicaciones, organizadores y media
-      const categoryIds = [...new Set(posts.flatMap(post => post.categories))];
-      const locationIds = [...new Set(posts.flatMap(post => post.location))];
-      const organizerIds = [...new Set(posts.flatMap(post => post.organizer))];
-      const mediaIds = [...new Set(posts.map(post => post.featured_media).filter(id => id))]; // Filtrar valores vacíos
-     
-      // Obtener datos relacionados en paralelo
-      const [categories, locations, organizers, media] = await Promise.all([
-          axios.get(`${apiUrl}/categories?include=${categoryIds.join(",")}`),
-          axios.get(`${apiUrl}/locations?include=${locationIds.join(",")}`),
-          axios.get(`${apiUrl}/organizers?include=${organizerIds.join(",")}`),
-          axios.get(`${apiUrl}/media?include=${mediaIds.join(",")}`)
-      ]);
-
-      // Convertir arrays en objetos para acceso rápido
-      const categoryMap = Object.fromEntries(categories.data.map(cat => [cat.id, cat.name]));
-      const locationMap = Object.fromEntries(locations.data.map(loc => [loc.id, loc.name]));
-      const organizerMap = Object.fromEntries(organizers.data.map(org => [org.id, org.name]));
-      const mediaMap = Object.fromEntries(media.data.map(med => [med.id, med.source_url])); // Guardar solo la URL de la imagen
-
-      // Agregar datos relacionados como strings
-      const enrichedPosts = posts.map(post => ({
-          ...post,
-          category_name: categoryMap[post.categories[0]] || "Desconocido",
-          location_name: locationMap[post.location[0]] || "Desconocido",
-          organizer_name: organizerMap[post.organizer[0]] || "Desconocido",
-          featured_media_url: mediaMap[post.featured_media] || null, // Asignar la URL de la imagen
-      }));
-
-      console.log('Posts:', enrichedPosts);
-      
-      return enrichedPosts;
-
+    return response.data;
   } catch (error) {
-      console.error("Error al obtener los datos:", error);
-      return [];
+    console.error("Error fetching posts:", error);
+    return [];
   }
 };
 
-
-getPostsWithRelations();
-
-const getAll = async () => {
-    try {
-      const response = await axios.get(baseUrl, {
-        auth: {
-          username: apiUser,
-          password: apiPass,
-        },
-      });
-  
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      return [];
-    }
-  };
-
 const create = newObject => {
-    const request = axios.post(baseUrl, newObject)
-    return request.then(response => response.data)
+  const request = axios.post(baseUrl, newObject)
+  return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {
-    const request = axios.put(`${baseUrl}/${id}`, newObject)
-    return request.then(response => response.data)
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  return request.then(response => response.data)
 }
 
 const remove = (id) => {
-    const request = axios.delete(`${baseUrl}/${id}`)
-    return request.then(response => response.data)
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then(response => response.data)
 }
 
 export default {
-    getAll: getAll,
-    create: create,
-    update: update,
-    remove: remove
+  getAll: getAll,
+  create: create,
+  update: update,
+  remove: remove,
+  getPosts: getPosts
 }
