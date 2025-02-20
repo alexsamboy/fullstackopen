@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Events from "./components/Events";
 import EventFilter from "./components/EventFilter";
+import Feature from "./components/Feature";
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -47,6 +48,7 @@ const App = () => {
   return (
     <>
       <Header />
+      <Feature />
       <div className="container mx-auto py-4">
         <EventFilter filters={filters} setFilters={setFilters} events={events} /></div>
         <Events events={filteredEvents} />
