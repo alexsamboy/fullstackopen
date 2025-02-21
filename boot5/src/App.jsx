@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Events from "./components/Events";
 import EventFilter from "./components/EventFilter";
-import Feature from "./components/Feature";
+import Hero from "./components/Hero";
 import Pagination from "./components/Pagination";
 
 const App = () => {
@@ -40,8 +40,7 @@ const App = () => {
       const campusMatch =
         filters.campus === "" || event.acf.detcampus === filters.campus;
       return searchMatch && categoryMatch && organizerMatch && campusMatch;
-    })
-    .sort((a, b) => new Date(a.fecha_inicio) - new Date(b.fecha_inicio));
+    });
 
   // Obtener eventos para la página actual
   const indexOfLastEvent = currentPage * itemsPerPage;
@@ -51,7 +50,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <Feature />
+      
 
       <EventFilter
         filters={filters}
