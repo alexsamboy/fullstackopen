@@ -6,8 +6,9 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
   };
 
   return (
-    <nav aria-label="Paginación">
-      <ul className="pagination">
+    <div className="container">
+    <nav aria-label="Paginacion">
+      <ul className="pagination justify-content-center">
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
           <button
             className="page-link"
@@ -45,6 +46,7 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }) => {
         </li>
       </ul>
     </nav>
+    </div>
   );
 };
 

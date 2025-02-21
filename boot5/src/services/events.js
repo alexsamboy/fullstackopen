@@ -15,7 +15,7 @@ const selectFields = [
   "featured_media",
 ].join(",");
 
-const perPage = 'per_page=' + 17;
+const perPage = 'per_page=' + 100;
 
 // URL final
 const baseUrl = `${apiUrl}/posts?_fields=${selectFields}&${perPage}`;
@@ -34,11 +34,25 @@ const getPosts = async () => {
       axiosConfig,
     );
 
+    const hoy = new Date().toLocaleString("sv-SE", { timeZone: "America/Santo_Domingo" }).replace("T", " ");
+    // Formato: YYYY-MM-DD HH:MM:SS
+
+    //console.log(hoy)
+
+    // Filtrar eventos donde acf.fecha_inicio sea >= hoy
+    const eventosFiltrados = response.data.filter(evento => 
+      evento.acf && evento.acf.fecha_contador >= hoy
+    );
+
+    // Ordenar los eventos por fecha de inicio (ascendente)
+    eventosFiltrados.sort((a, b) => a.acf.fecha_contador.localeCompare(b.acf.fecha_contador));
+    //console.log('Filtrados y ordenados',eventosFiltrados)
+
     // Verificar si la respuesta contiene los datos esperados
     //console.log("API Response:", response.data);
 
     // Asegurar que 'posts' sea un array
-    const posts = Array.isArray(response.data) ? response.data : [];
+    const posts = Array.isArray(eventosFiltrados) ? eventosFiltrados : [];
 
     if (posts.length === 0) {
       console.warn("No se encontraron posts en la API.");
@@ -98,12 +112,29 @@ const getAll = async () => {
       },
     });
 
-    return response.data;
+    const hoy = new Date().toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
+
+    // Filtrar eventos donde acf.fecha_inicio sea >= hoy
+    const eventosFiltrados = response.data.filter(evento =>
+      evento.acf && evento.acf.fecha_contador >= hoy
+    );
+
+    // Ordenar los eventos por fecha de inicio (ascendente)
+    eventosFiltrados.sort((a, b) => a.acf.fecha_contador.localeCompare(b.acf.fecha_contador));
+
+    console.log("Eventos filtrados", eventosFiltrados);
+    console.log("Cantidad de eventos filtrados:", eventosFiltrados.length);
+    console.log("Cantidad de eventos:", response.data.length);
+    return eventosFiltrados;
+
   } catch (error) {
     console.error("Error fetching posts:", error);
     return [];
   }
 };
+
+
+//getAll();
 
 const create = newObject => {
   const request = axios.post(baseUrl, newObject)

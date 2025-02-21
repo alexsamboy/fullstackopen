@@ -15,6 +15,7 @@ const EventFilter = ({ filters, setFilters, events }) => {
     };
   
     return (
+      <div className="container mx-auto py-4">
       <div className="py-4 bg-gray-100 rounded-lg mb-4">
         <input
           type="text"
@@ -22,20 +23,20 @@ const EventFilter = ({ filters, setFilters, events }) => {
           placeholder="Buscar evento..."
           value={filters.search}
           onChange={handleChange}
-          className="p-2 border rounded w-full mb-2"
+          className="p-2 border rounded w-full mb-2 form-control"
         />
   
-        <select name="category" value={filters.category} onChange={handleChange} className="p-2 border rounded w-full mb-2">
+        <select name="category" value={filters.category} onChange={handleChange} className="p-2 border rounded w-full mb-2 form-control">
           <option value="">Filtrar por Categoría</option>
           {categories.map((cat, index) => <option key={index} value={cat}>{cat}</option>)}
         </select>
   
-        <select name="organizer" value={filters.organizer} onChange={handleChange} className="p-2 border rounded w-full mb-2">
+        <select name="organizer" value={filters.organizer} onChange={handleChange} className="p-2 border rounded w-full mb-2 form-control">
           <option value="">Filtrar por Organizador</option>
           {organizers.map((org, index) => <option key={index} value={org}>{org}</option>)}
         </select>
   
-        <select name="campus" value={filters.campus} onChange={handleChange} className="p-2 border rounded w-full mb-2">
+        <select name="campus" value={filters.campus} onChange={handleChange} className="p-2 border rounded w-full mb-2 form-control">
           <option value="">Filtrar por Campus</option>
           {campuses.map((camp, index) => <option key={index} value={camp}>{camp}</option>)}
         </select>
@@ -48,6 +49,7 @@ const EventFilter = ({ filters, setFilters, events }) => {
             Limpiar
           </button>
         </div>
+      </div>
       </div>
     );
   };

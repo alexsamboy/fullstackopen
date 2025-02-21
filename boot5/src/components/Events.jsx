@@ -3,8 +3,8 @@ import Date from "./FormatDateTime";
 const Events = ({ events }) => {
   return (
     <>
-      <div className="container">
-        <div className="row row-cols-1 row-cols-md-4 g-4">
+      <div className="container mb-4">
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
           {events.map((event) => (
             <div className="col" key={event.id}>
               <div className="card h-100">
@@ -34,7 +34,7 @@ const Events = ({ events }) => {
                   </ul>
                 </div>
                 <div className="card-footer">
-                  <small className="text-body-secondary hstack d-flex justify-content-between text-uppercase fw-normal">
+                  <small className="text-body-secondary hstack d-flex justify-content-between text-uppercase fw-normal text-wrap">
                     <span>{event.acf.detcampus}</span><div className="vr"></div>
                     <span>{event.acf.status}</span><div className="vr"></div>
                     <span>{event.acf.modalidad}</span>
