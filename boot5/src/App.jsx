@@ -19,7 +19,7 @@ const App = () => {
     eventService.getPosts().then((initialEvents) => {
       // Obtener la fecha actual
       const now = new Date();
-      
+
       // Filtrar los eventos para que solo se muestren aquellos con fecha de inicio mayor o igual al día actual
       const validEvents = initialEvents.filter((event) => {
         const eventDate = new Date(`${event.fecha_inicio}`);
@@ -34,13 +34,20 @@ const App = () => {
   const filteredEvents = events
     .filter((event) => {
       // Aplica filtro de búsqueda
-      const searchMatch = filters.search === "" || event.title.rendered.toLowerCase().includes(filters.search.toLowerCase());
+      const searchMatch =
+        filters.search === "" ||
+        event.title.rendered
+          .toLowerCase()
+          .includes(filters.search.toLowerCase());
       // Aplica filtro de categoría
-      const categoryMatch = filters.category === "" || event.category_name === filters.category;
+      const categoryMatch =
+        filters.category === "" || event.category_name === filters.category;
       // Aplica filtro de organizador
-      const organizerMatch = filters.organizer === "" || event.organizer_name === filters.organizer;
+      const organizerMatch =
+        filters.organizer === "" || event.organizer_name === filters.organizer;
       // Aplica filtro de campus
-      const campusMatch = filters.campus === "" || event.acf.detcampus === filters.campus;
+      const campusMatch =
+        filters.campus === "" || event.acf.detcampus === filters.campus;
       return searchMatch && categoryMatch && organizerMatch && campusMatch;
     })
     .sort((a, b) => new Date(a.fecha_inicio) - new Date(b.fecha_inicio)); // Orden ascendente por fecha
@@ -50,9 +57,14 @@ const App = () => {
       <Header />
       <Feature />
       <div className="container mx-auto py-4">
-        <EventFilter filters={filters} setFilters={setFilters} events={events} /></div>
-        <Events events={filteredEvents} />
-      
+        <EventFilter
+          filters={filters}
+          setFilters={setFilters}
+          events={events}
+        />
+      </div>
+      <Events events={filteredEvents} />
+
       <Footer />
     </>
   );
