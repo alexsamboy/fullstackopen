@@ -50,7 +50,7 @@ const App = () => {
   return (
     <>
       <Header />
-      
+      <Hero events={events[0]} />
 
       <EventFilter
         filters={filters}
