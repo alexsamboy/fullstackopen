@@ -15,7 +15,7 @@ const Events = ({ events }) => {
                     <span className="visually-hidden">unread messages</span>
                   </span>
                   <img
-                    src="https://dia.pucmm.edu.do/wp-content/uploads/2023/05/PUCMM-jpg.webp"
+                    src={event.featured_media_url}
                     className="card-img-top object-fit-cover img-fluid h-100"
                     alt={event.title.rendered}
                   />
