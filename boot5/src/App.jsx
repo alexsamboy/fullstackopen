@@ -15,48 +15,49 @@ const App = () => {
     organizer: "",
     campus: "",
   });
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 16;
+  const [heroEvent, setHeroEvent] = useState(null);
+  const itemsPerPage = 12;
 
   useEffect(() => {
     eventService.getPosts().then((initialEvents) => {
-      console.log('Eventos App ',initialEvents)
-      setEvents(initialEvents);
+      console.log("Eventos App ", initialEvents);
+
+      // Separar el evento más próximo para el Hero
+      const [nextEvent, ...remainingEvents] = initialEvents;
+
+      setHeroEvent(nextEvent); // Guardar el evento para el Hero
+      setEvents(remainingEvents); // Guardar el resto de evento
     });
   }, []);
 
-  const filteredEvents = events
-    .filter((event) => {
-      const searchMatch =
-        filters.search === "" ||
-        event.title.rendered
-          .toLowerCase()
-          .includes(filters.search.toLowerCase());
-      const categoryMatch =
-        filters.category === "" || event.category_name === filters.category;
-      const organizerMatch =
-        filters.organizer === "" || event.organizer_name === filters.organizer;
-      const campusMatch =
-        filters.campus === "" || event.acf.detcampus === filters.campus;
-      return searchMatch && categoryMatch && organizerMatch && campusMatch;
-    });
+  const filteredEvents = events.filter((event) => {
+    const searchMatch =
+      filters.search === "" ||
+      event.title.rendered.toLowerCase().includes(filters.search.toLowerCase());
+    const categoryMatch =
+      filters.category === "" || event.category_name === filters.category;
+    const organizerMatch =
+      filters.organizer === "" || event.organizer_name === filters.organizer;
+    const campusMatch =
+      filters.campus === "" || event.acf.detcampus === filters.campus;
+    return searchMatch && categoryMatch && organizerMatch && campusMatch;
+  });
 
   // Obtener eventos para la página actual
   const indexOfLastEvent = currentPage * itemsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
-  const paginatedEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+  const paginatedEvents = filteredEvents.slice(
+    indexOfFirstEvent,
+    indexOfLastEvent
+  );
 
   return (
     <>
-      <Header />
-      <Hero events={events[0]} />
+      <Header events={events} />
+      <Hero events={heroEvent} />
 
-      <EventFilter
-        filters={filters}
-        setFilters={setFilters}
-        events={events}
-      />
+      <EventFilter filters={filters} setFilters={setFilters} events={events} />
 
       <Events events={paginatedEvents} />
       <Pagination
@@ -70,4 +71,3 @@ const App = () => {
 };
 
 export default App;
-
