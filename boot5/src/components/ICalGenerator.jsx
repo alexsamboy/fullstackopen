@@ -77,7 +77,7 @@ END:VEVENT`;
     const fileName =
       eventList.length === 1
         ? `${eventList[0].title.rendered}.ics`
-        : "Agenda_Universitaria.ics";
+        : "Agenda-PUCMM-Dia-a-Dia.ics";
 
     // Crear y hacer clic en el enlace de descarga
     const link = document.createElement("a");
