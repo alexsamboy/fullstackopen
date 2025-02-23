@@ -7,7 +7,7 @@ import Notification from "./components/Notification";
 import Footer from "./components/Footer";
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
+  const [persons, setPersons] = useState(null);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [strFilter, setStrFilter] = useState("");
@@ -24,6 +24,11 @@ const App = () => {
     });
   }, []);
 
+  // no renderizar nada si notes aún es null
+  if (!persons) {
+    return null;
+  }
+
   const showMessage = (text, type = "success") => {
     setMessage(text);
     setMessageType(type);
@@ -32,7 +37,7 @@ const App = () => {
     }, 3000);
   };
 
-  console.log("render", persons.length, "persons");
+  //console.log("render", persons.length, "persons");
 
   //Evitar que el formulario recargue la pagina
   const addPerson = (event) => {
@@ -40,7 +45,7 @@ const App = () => {
 
     if (newName.trim() === "" || newNumber.trim() === "") {
       showMessage("El nombre y el número no pueden estar vacíos.", "error");
-      alert("El nombre y el número no pueden estar vacíos.");
+      //alert("El nombre y el número no pueden estar vacíos.");
       return;
     }
 
