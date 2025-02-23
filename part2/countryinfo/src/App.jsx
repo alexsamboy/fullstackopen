@@ -4,7 +4,7 @@ import Filter from "./components/Filter";
 import Countries from "./components/Countries";
 
 const App = () => {
-  const [countries, setCountries] = useState([]);
+  const [countries, setCountries] = useState(null);
   const [strFilter, setStrFilter] = useState("");
 
   useEffect(() => {
@@ -15,6 +15,10 @@ const App = () => {
       setCountries(initialCountries); // Actualiza el estado de los países
     });
   }, []); // El array vacío asegura que solo se ejecute una vez
+
+  if (!countries) {
+    return null;
+  }
 
   console.log("render", countries.length, "countries");
 
