@@ -57,7 +57,8 @@ const Events = ({ events }) => {
                   </ul>
                 </div>
                 <div className="card-footer">
-                  <small className="text-body-secondary hstack d-flex justify-content-between text-uppercase fw-normal text-wrap">
+                  
+                  <small className="text-body-secondary hstack d-flex justify-content-evenly text-uppercase fw-normal text-wrap">
                     <span>{event.acf.detcampus}</span>
                     <div className="vr"></div>
                     <span>{event.acf.status}</span>

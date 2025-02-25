@@ -27,12 +27,12 @@ const EventFilter = ({ filters, setFilters, events }) => {
             className="p-2 border rounded w-full mb-2 form-control"
           />
         </div>
-        <div className="col">
+        <div className="col-6">
           <select
             name="category"
             value={filters.category}
             onChange={handleChange}
-            className="p-2 border rounded w-full mb-2 form-control"
+            className="p-2 border rounded w-full mb-2 form-select"
           >
             <option value="">Filtrar por Categoría</option>
             {categories.map((cat, index) => (
@@ -42,12 +42,12 @@ const EventFilter = ({ filters, setFilters, events }) => {
             ))}
           </select>
         </div>
-        <div className="col">
+        <div className="col-6">
           <select
             name="organizer"
             value={filters.organizer}
             onChange={handleChange}
-            className="p-2 border rounded w-full mb-2 form-control"
+            className="p-2 border rounded w-full mb-2 form-select"
           >
             <option value="">Filtrar por Organizador</option>
             {organizers.map((org, index) => (
@@ -57,12 +57,12 @@ const EventFilter = ({ filters, setFilters, events }) => {
             ))}
           </select>
         </div>
-        <div className="col-1">
+        <div className="col-6">
           <select
             name="campus"
             value={filters.campus}
             onChange={handleChange}
-            className="p-2 border rounded w-full mb-2 form-control"
+            className="p-2 border rounded w-full mb-2 form-select"
           >
             <option value="">Filtrar por Campus</option>
             {campuses.map((camp, index) => (
@@ -72,16 +72,16 @@ const EventFilter = ({ filters, setFilters, events }) => {
             ))}
           </select>
         </div>
-        <div className="col">
-          <div className="flex">
-            <button
-              className="btn p-2 btn-secondary text-white rounded w-full"
+        <div className="col-6">
+          <div className="btn-group" role="group">
+            <button type="button"
+              className="btn btn-secondary text-white rounded"
               onClick={handleChange}
             >
               Aplicar
             </button>
             <button
-              className="btn p-2 btn-secondary text-white rounded w-full"
+              className="btn btn-secondary text-white rounded mx-3"
               onClick={handleReset}
             >
               Limpiar

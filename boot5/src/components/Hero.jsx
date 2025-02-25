@@ -1,4 +1,5 @@
 import Count from "./Count";
+import FormatDateTime from "./FormatDateTime";
 
 const Hero = ({ events }) => {
   if (!events || !events.title) {
@@ -12,7 +13,7 @@ const Hero = ({ events }) => {
   }
   //console.log('Hero Event', events)
   return (
-    <div className="p-5 bg-body-tertiary h-75">
+    <div className="p-4 p-sm-5 bg-body-tertiary h-75">
       <div className="container py-5">
         <div className="row row-cols-1 row-cols-md-2 g-4">
           <div className="col text-left">
@@ -22,7 +23,7 @@ const Hero = ({ events }) => {
             </div>
             <h1 className="text-body-emphasis">{events.title.rendered}</h1>
             <p className="mx-auto lead">
-              {events.fecha_inicio || "Fecha no disponible"}{" "}
+              {events.fecha_inicio || "Fecha no disponible"}{" "}                     
               {events.location_name || "Ubicación no disponible"}{" "}
               {events.acf.detcampus || "Ubicación no disponible"}
             </p>
