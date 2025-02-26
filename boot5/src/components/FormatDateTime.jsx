@@ -7,7 +7,7 @@ const formatDate = ({date}) => {
     const month = months[parseInt(date.slice(5, 7), 10) - 1];
     const day = parseInt(date.slice(8, 10), 10);
 
-    return `${day} ${month}, ${year}`;
+    return `${day} de ${month}, ${year}`;
 };
 
 const formatTime12h = ({time}) => {

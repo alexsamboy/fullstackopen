@@ -1,7 +1,7 @@
 import Count from "./Count";
-import FormatDateTime from "./FormatDateTime";
+import Date from "./FormatDateTime";
 
-const Hero = ({ events }) => {
+const Hero = ({ events, onCountdownEnd }) => {
   if (!events || !events.title) {
     return (
       <div className="container py-5">
@@ -9,9 +9,9 @@ const Hero = ({ events }) => {
           Cargando evento...
         </div>
       </div>
-    ); // Evita errores si events no está definido
+    );
   }
-  //console.log('Hero Event', events)
+
   return (
     <div className="p-4 p-sm-5 bg-body-tertiary h-75">
       <div className="container py-5">
@@ -23,7 +23,9 @@ const Hero = ({ events }) => {
             </div>
             <h1 className="text-body-emphasis">{events.title.rendered}</h1>
             <p className="mx-auto lead">
-              {events.fecha_inicio || "Fecha no disponible"}{" "}                     
+              <Date.formatDate date={events.fecha_inicio} />{" "}
+              <Date.formatTime12h time={events.acf.hora_de_inicio} />{" "}
+              <Date.formatTime12h time={events.acf.hora_termino} />{" "}                   
               {events.location_name || "Ubicación no disponible"}{" "}
               {events.acf.detcampus || "Ubicación no disponible"}
             </p>
@@ -32,7 +34,7 @@ const Hero = ({ events }) => {
             </p>
           </div>
           <div className="col d-flex align-items-center flex-column justify-content-center">
-            <Count fechaInicio={events.fecha_inicio} />
+            <Count fechaInicio={events.fecha_inicio} onCountdownEnd={onCountdownEnd} />
           </div>
         </div>
       </div>

@@ -23,39 +23,43 @@ const App = () => {
     eventService.getPosts().then((initialEvents) => {
       console.log("Eventos App ", initialEvents);
 
-      // Separar el evento más próximo para el Hero
-      const [nextEvent, ...remainingEvents] = initialEvents;
+      const now = new Date();
+      const futureEvents = initialEvents.filter(
+        (event) => new Date(event.fecha_inicio) > now
+      );
 
-      setHeroEvent(nextEvent); // Guardar el evento para el Hero
-      setEvents(remainingEvents); // Guardar el resto de evento
+      if (futureEvents.length > 0) {
+        setHeroEvent(futureEvents.shift()); // Extrae el primer evento
+        setEvents(futureEvents); // Guarda el resto
+      }
     });
   }, []);
 
   const filteredEvents = events.filter((event) => {
-    const searchMatch =
-      filters.search === "" ||
-      event.title.rendered.toLowerCase().includes(filters.search.toLowerCase());
-    const categoryMatch =
-      filters.category === "" || event.category_name === filters.category;
-    const organizerMatch =
-      filters.organizer === "" || event.organizer_name === filters.organizer;
-    const campusMatch =
-      filters.campus === "" || event.acf.detcampus === filters.campus;
-    return searchMatch && categoryMatch && organizerMatch && campusMatch;
+    return (
+      (filters.search === "" ||
+        event.title.rendered.toLowerCase().includes(filters.search.toLowerCase())) &&
+      (filters.category === "" || event.category_name === filters.category) &&
+      (filters.organizer === "" || event.organizer_name === filters.organizer) &&
+      (filters.campus === "" || event.acf.detcampus === filters.campus)
+    );
   });
 
-  // Obtener eventos para la página actual
   const indexOfLastEvent = currentPage * itemsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
-  const paginatedEvents = filteredEvents.slice(
-    indexOfFirstEvent,
-    indexOfLastEvent
-  );
+  const paginatedEvents = filteredEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+
+  const handleCountdownEnd = () => {
+    if (events.length === 0) return; // No actualizar si ya no hay más eventos
+
+    setHeroEvent(events.shift()); // Asigna el siguiente evento
+    setEvents([...events]); // Actualiza la lista eliminando el primero
+  };
 
   return (
     <>
       <Header events={events} />
-      <Hero events={heroEvent} />
+      <Hero events={heroEvent} onCountdownEnd={handleCountdownEnd} />
 
       <EventFilter filters={filters} setFilters={setFilters} events={events} />
 
