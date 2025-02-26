@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     eventService.getPosts().then((initialEvents) => {
-      console.log("Eventos App ", initialEvents);
+      //console.log("Eventos App ", initialEvents);
 
       const now = new Date();
       const futureEvents = initialEvents.filter(
