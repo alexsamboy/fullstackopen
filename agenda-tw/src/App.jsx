@@ -3,6 +3,7 @@ import Hero from './components/Hero'
 import Notify from './components/Notify'
 import Top from './components/Top'
 import Menu from './components/Menu'
+import MegaMenu from './components/MegaMenu'
 
 
 
@@ -13,6 +14,7 @@ function App() {
     <>
       <Notify />
       <Top />
+      <MegaMenu />
       <Menu />
       <Hero />
 
