@@ -4,6 +4,7 @@ import Notify from './components/Notify'
 import Top from './components/Top'
 import Menu from './components/Menu'
 import MegaMenu from './components/MegaMenu'
+import Card from './components/Card'
 
 
 
@@ -17,7 +18,7 @@ function App() {
       <MegaMenu />
       <Menu />
       <Hero />
-
+      <Card />
     </>
   )
 }
