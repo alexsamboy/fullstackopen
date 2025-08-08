@@ -13,7 +13,12 @@ function App() {
 
   return (
     <>
-      <Notify />
+      <Notify
+        title="¡Atención!"
+        message="Habrá una interrupción del servicio el sábado a las 11 PM."
+        linkText="Ver detalles"
+        linkUrl="https://tuservicio.com/interrupcion"
+      />
       <Top />
       <MegaMenu />
       <Menu />
